@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <ul>
+    {% for post in posts %}
+        <li>{{ post.title }} by {{ post.author.name }}</li>
+    {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('create_post') }}">Create a Post</a></p>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Student Database</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>University Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.university_number }}</td>
+                    <td>
+                        <a href="{{ url_for('detail_data', id=student.id) }}">Detail</a>
+                        <a href="{{ url_for('update', id=student.id) }}">Update</a>
+                        <a href="{{ url_for('delete', id=student.id) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

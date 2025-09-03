@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update Student</h1>
+    <form method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ student.name }}"><br><br>
+        <label for="university_number">University Number:</label>
+        <input type="text" id="university_number" name="university_number" value="{{ student.university_number }}"><br><br>
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" value="{{ student.department }}"><br><br>
+        <label for="email_id">Email ID:</label>
+        <input type="email" id="email_id" name="email_id" value="{{ student.email_id }}"><br><br>
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

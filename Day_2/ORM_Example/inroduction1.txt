@@ -1,0 +1,29 @@
+ORM Basics 
+
+Here's a brief overview of ORM basics with SQLAlchemy: 
+Defining Models 
+
+    Use the db.Model class to define database models.
+    Define columns using db.Column instances.
+    Use primary_key=True to specify primary keys.
+     
+
+CRUD Operations 
+
+    Create: Use db.session.add() to add new instances to the database.
+    Read: Use db.session.query() to query the database.
+    Update: Use db.session.commit() to commit changes to the database.
+    Delete: Use db.session.delete() to delete instances from the database.
+     
+
+Relationships 
+
+    Use db.relationship to define relationships between models.
+    Use backref to specify bidirectional relationships.
+     
+
+Querying 
+
+    Use db.session.query() to construct queries.
+    Use filter(), order_by(), and limit() to filter and paginate results.
+     

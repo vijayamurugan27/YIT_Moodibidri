@@ -1,0 +1,63 @@
+What is SQLAlchemy? 
+
+SQLAlchemy is a SQL toolkit and Object-Relational Mapping (ORM) system for Python. 
+It provides a high-level interface for interacting with databases using Python code. 
+SQLAlchemy allows you to define database models as Python classes, 
+and then use those classes to create, read, update, and delete data in your database. 
+
+SQLAlchemy Key Features: 
+
+    Database Abstraction: SQLAlchemy provides a layer of abstraction between your Python code and the database, allowing you to switch between different databases (e.g., MySQL, PostgreSQL, SQLite) with minimal changes to your code.
+    Object-Relational Mapping (ORM): SQLAlchemy's ORM system allows you to define database models as Python classes, making it easier to work with data in your database.
+    SQL Expression Language: SQLAlchemy provides a SQL expression language that allows you to construct SQL queries using Python code.
+     
+
+Setup and Configuration in Flask 
+
+To use SQLAlchemy with Flask, you'll need to install the Flask-SQLAlchemy package. 
+
+pip install Flask-SQLAlchemy
+
+SQLAlchemy with Flask
+
+code : 
+
+
+----------------------------------------------
+# app.py
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+
+# Configure SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Create a SQLAlchemy instance
+db = SQLAlchemy(app)
+
+# Define a database model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f"User('{self.name}', '{self.email}')"
+
+# Create the database tables
+with app.app_context():
+    db.create_all()
+
+# Example usage:
+@app.route('/')
+def index():
+    user = User(name='John Doe', email='john@example.com')
+    db.session.add(user)
+    db.session.commit()
+    return 'User created!'
+
+
+
+-------------------------------------------------------------

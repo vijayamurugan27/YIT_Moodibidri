@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Order Page{% endblock %}
+
+{% block content %}
+    <h1>Place an Order</h1>
+    <form method="post">
+        <label for="customer_name">Customer Name:</label>
+        <input type="text" id="customer_name" name="customer_name"><br><br>
+        <label for="customer_email">Customer Email:</label>
+        <input type="email" id="customer_email" name="customer_email"><br><br>
+        <label for="menu_item_id">Menu Item:</label>
+        <select id="menu_item_id" name="menu_item_id">
+        {% for menu_item in menu_items %}
+            <option value="{{ menu_item.id }}">{{ menu_item.name }} - ${{ menu_item.price }}</option>
+        {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Place Order">
+    </form>
+{% endblock %}

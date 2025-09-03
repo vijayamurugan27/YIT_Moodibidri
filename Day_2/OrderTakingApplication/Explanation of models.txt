@@ -1,0 +1,242 @@
+MenuItem Model:
+
+class MenuItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return f"MenuItem('{self.name}', {self.price})"
+
+
+Purpose: Represents a food or drink item on the menu.
+
+id: Primary key (unique identifier).
+
+name: String field, cannot be NULL.
+
+price: Floating-point number (e.g., 9.99), cannot be NULL.
+
+__repr__: Returns a readable string for debugging.
+
+
+Customer Model: 
+
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f"Customer('{self.name}', '{self.email}')"
+
+
+Purpose: Represents a customer placing orders.
+
+id: Primary key.
+
+name: Customer's name.
+
+email: Must be unique; prevents duplicate accounts.
+
+__repr__: Debugging-friendly string.
+
+
+Order model:
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
+    customer = db.relationship('Customer', backref=db.backref('orders', lazy=True))
+    menu_item_id = db.Column(db.Integer, db.ForeignKey('menu_item.id'), nullable=False)
+    menu_item = db.relationship('MenuItem', backref=db.backref('orders', lazy=True))
+    status = db.Column(db.String(50), nullable=False, default='pending')
+
+    def __repr__(self):
+        return f"Order({self.customer.name}, {self.menu_item.name}, {self.status})"
+
+
+Purpose: Represents a customer's order for a menu item.
+
+customer_id: Foreign key → Customer.id.
+
+customer: Relationship object to access the customer who placed the order.
+
+menu_item_id: Foreign key → MenuItem.id.
+
+menu_item: Relationship object to access the ordered item.
+
+status: Order status (default = 'pending').
+
+__repr__: Shows which customer ordered which item and its status.
+
+
+
+Key SQLAlchemy Concepts Used
+
+db.Model → Base class for all models.
+
+db.Column → Defines table columns.
+
+primary_key=True → Makes a column a primary key.
+
+nullable=False → Column cannot be NULL.
+
+unique=True → Enforces unique values (e.g., email).
+
+db.ForeignKey() → Creates relationships between tables.
+
+db.relationship() → Enables accessing related objects easily.
+
+backref → Adds reverse access (e.g., customer.orders gives all orders for a customer).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Some of the commonly used SQLAlchemy operations used :
+
+
+1. Base and Model Definition
+
+    db.Model
+
+    Base class for all models in Flask-SQLAlchemy.
+
+Each model corresponds to a database table.
+
+
+2. Column Types
+
+    db.Column() – Defines a table column.
+
+    Data Types:
+
+    db.Integer – Integer values.
+
+    db.String(length) – Variable-length string.
+
+    db.Text – Large text field.
+
+    db.Float – Floating-point numbers.
+
+    db.Boolean – Boolean values (True/False).
+
+    db.Date, db.DateTime – Date and time fields.
+
+    db.JSON – Stores JSON objects (if supported by DB).
+
+3. Column Options
+
+    primary_key=True – Sets column as primary key.
+
+    nullable=False – Prevents NULL values.
+
+    unique=True – Ensures unique values across rows.
+
+    default=value – Sets a default value for new rows.
+
+    index=True – Creates an index for faster queries.
+
+4. Relationships Between Tables
+
+    db.ForeignKey('table.column')
+
+    Creates a foreign key reference to another table.
+
+    db.relationship()
+
+    Establishes ORM-level relationships.
+
+    Parameters:
+
+    backref='name' – Adds reverse access (e.g., customer.orders).
+
+    lazy='select'|'joined'|'subquery'|True|False – Controls when related objects are loaded.
+
+    cascade – Controls cascading deletes/updates.
+
+5. Table Configuration
+
+    __tablename__ (optional)
+
+    Explicitly sets the database table name.
+
+    If not defined, SQLAlchemy uses the lowercase class name.
+
+6. Model Representation
+
+    __repr__ method
+
+    Returns a string representation for debugging.
+
+7. Querying Data
+
+    Session Querying (via Model.query)
+
+    .all() → Returns all records.
+
+    .first() → Returns first record.
+
+    .get(id) → Returns record by primary key.
+
+    .filter_by(field=value) → Filters records.
+
+    .filter(Model.field > value) → More complex filters.
+
+    .order_by(Model.field) → Orders results.
+
+    .limit(n) → Limits number of results.
+
+8. CRUD Operations
+
+    Create:
+
+    item = MenuItem(name="Pizza", price=12.99)
+    db.session.add(item)
+    db.session.commit()
+
+
+    Read:
+
+    MenuItem.query.all()
+
+
+    Update:
+
+    item.price = 14.99
+    db.session.commit()
+
+
+    Delete:
+
+    db.session.delete(item)
+    db.session.commit()
+
+
+9. Database Session
+
+    db.session
+
+    Manages transactions.
+
+    Must call db.session.commit() to save changes.
+
+10. Migrations
+
+    Flask-Migrate / Alembic
+
+    Handles database schema changes without losing data.

@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+main {
+    min-height: 600px;
+}
+
+.bg-primary {
+    background-color: #3498db !important;
+}
+
+.text-primary {
+    color: #3498db !important;
+}
+
+.nav-link {
+    color: #fff !important;
+}
+
+.nav-link:hover {
+    color: #ccc !important;
+}
+
+.container {
+    max-width: 800px;
+}
+
+footer {
+    background-color: #2ecc71 !important;
+}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Orders Page{% endblock %}
+
+{% block content %}
+    <h1>Orders</h1>
+    <h2>Received Orders:</h2>
+    <ul>
+    {% for order in received_orders %}
+        <li>{{ order.customer.name }} - {{ order.menu_item.name }} ({{ order.status }}) <a href="{{ url_for('update_status', order_id=order.id, status='pending') }}">Mark as Pending</a> <a href="{{ url_for('update_status', order_id=order.id, status='delivered') }}">Mark as Delivered</a></li>
+    {% endfor %}
+    </ul>
+    <h2>Pending Orders:</h2>
+    <ul>
+    {% for order in pending_orders %}
+        <li>{{ order.customer.name }} - {{ order.menu_item.name }} ({{ order.status }}) <a href="{{ url_for('update_status', order_id=order.id, status='received') }}">Mark as Received</a> <a href="{{ url_for('update_status', order_id=order.id, status='delivered') }}">Mark as Delivered</a></li>
+    {% endfor %}
+    </ul>
+    <h2>Delivered Orders:</h2>
+    <ul>
+    {% for order in delivered_orders %}
+        <li>{{ order.customer.name }} - {{ order.menu_item.name }} ({{ order.status }}) <a href="{{ url_for('update_status', order_id=order.id, status='pending') }}">Mark as Pending</a> <a href="{{ url_for('update_status', order_id=order.id, status='received') }}">Mark as Received</a></li>
+    {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('menu_app') }}">Add Menu Item</a></p>
+{% endblock %}

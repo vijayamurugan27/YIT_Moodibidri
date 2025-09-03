@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a new borrowing</title>
+</head>
+<body>
+    <h1>Add a new borrowing</h1>
+    <form method="post">
+        <label for="book_id">Book ID:</label>
+        <select id="book_id" name="book_id">
+            {% for book in books %}
+            <option value="{{ book.id }}">{{ book.title }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="student_id">Student ID:</label>
+        <select id="student_id" name="student_id">
+            {% for student in students %}
+            <option value="{{ student.id }}">{{ student.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="borrow_date">Borrow Date:</label>
+        <input type="date" id="borrow_date" name="borrow_date"><br><br>
+        <label for="return_date">Return Date:</label>
+        <input type="date" id="return_date" name="return_date"><br><br>
+        <input type="submit" value="Add borrowing">
+    </form>
+</body>
+</html>

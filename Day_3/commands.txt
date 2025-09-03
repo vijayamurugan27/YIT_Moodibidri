@@ -1,0 +1,16 @@
+flask db init
+flask db migrate
+flask db upgrade
+
+or 
+
+flask --app app db init
+flask --app app db migrate
+flask --app app db upgrade
+
+
+
+
+
+python run.py
+
