@@ -1,0 +1,8 @@
+Starting the flask application.
+
+flask run
+
+
+run automated testing.
+
+flask test

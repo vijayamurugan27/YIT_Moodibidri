@@ -1,0 +1,140 @@
+
+{% extends "base.html" %}
+
+{% block title %}Add Student - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header animate-in">
+    <div class="container">
+        <h1><i class="bi bi-person-plus-fill me-3"></i>Add New Student</h1>
+        <p class="lead">Register a new student in the system</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card animate-in">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="bi bi-form me-2"></i>
+                    Student Registration Form
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="name" class="form-label">
+                                    <i class="bi bi-person-fill me-2"></i>
+                                    Student Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="name" 
+                                       name="name" 
+                                       placeholder="Enter student's full name"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid student name.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="course" class="form-label">
+                                    <i class="bi bi-book-fill me-2"></i>
+                                    Course
+                                </label>
+                                <select class="form-control" id="course" name="course" required>
+                                    <option value="">Select a course</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Software Engineering">Software Engineering</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                    <option value="Machine Learning">Machine Learning</option>
+                                    <option value="Cybersecurity">Cybersecurity</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Mobile Development">Mobile Development</option>
+                                    <option value="Database Management">Database Management</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a course.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">
+                            <i class="bi bi-envelope-fill me-2"></i>
+                            Email Address (Optional)
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               name="email" 
+                               placeholder="student@example.com">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="notes" class="form-label">
+                            <i class="bi bi-journal-text me-2"></i>
+                            Additional Notes (Optional)
+                        </label>
+                        <textarea class="form-control" 
+                                  id="notes" 
+                                  name="notes" 
+                                  rows="3" 
+                                  placeholder="Any additional information about the student..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary btn-lg me-md-2">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Add Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Cards -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card animate-in border-0" style="background: linear-gradient(135deg, #667eea20, #764ba220);">
+            <div class="card-body text-center">
+                <i class="bi bi-shield-check" style="font-size: 2rem; color: #667eea;"></i>
+                <h6 class="mt-3">Secure Registration</h6>
+                <p class="text-muted small">All student data is securely stored and protected.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card animate-in border-0" style="background: linear-gradient(135deg, #667eea20, #764ba220);">
+            <div class="card-body text-center">
+                <i class="bi bi-lightning-charge" style="font-size: 2rem; color: #667eea;"></i>
+                <h6 class="mt-3">Quick Process</h6>
+                <p class="text-muted small">Simple and fast student registration process.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card animate-in border-0" style="background: linear-gradient(135deg, #667eea20, #764ba220);">
+            <div class="card-body text-center">
+                <i class="bi bi-graph-up-arrow" style="font-size: 2rem; color: #667eea;"></i>
+                <h6 class="mt-3">Track Progress</h6>
+                <p class="text-muted small">Monitor and manage student progress easily.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

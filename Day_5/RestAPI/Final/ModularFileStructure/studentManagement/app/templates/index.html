@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header animate-in">
+    <div class="container">
+        <h1><i class="bi bi-speedometer2 me-3"></i>Student Dashboard</h1>
+        <p class="lead">Manage and view all student records in one place</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-people-fill"></i>
+            <h3>{{ students|length }}</h3>
+            <p>Total Students</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-book-fill"></i>
+            <h3>{{ students|map(attribute='course')|unique|list|length }}</h3>
+            <p>Active Courses</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-graph-up-arrow"></i>
+            <h3>100%</h3>
+            <p>Success Rate</p>
+        </div>
+    </div>
+</div>
+
+<!-- Students Table -->
+<div class="card animate-in">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+            <i class="bi bi-table me-2"></i>
+            Student Records
+        </h4>
+        <a href="{{ url_for('main.add_student') }}" class="btn btn-light">
+            <i class="bi bi-person-plus-fill me-2"></i>
+            Add New Student
+        </a>
+    </div>
+    <div class="card-body p-0">
+        {% if students %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th><i class="bi bi-hash me-2"></i>ID</th>
+                            <th><i class="bi bi-person-fill me-2"></i>Name</th>
+                            <th><i class="bi bi-book-fill me-2"></i>Course</th>
+                            <th class="text-center"><i class="bi bi-gear-fill me-2"></i>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td class="fw-bold text-primary">#{{ student.id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle me-3">
+                                        <i class="bi bi-person-circle" style="font-size: 2rem; color: #667eea;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">{{ student.name }}</div>
+                                        <small class="text-muted">Student ID: {{ student.id }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-gradient" style="background: var(--primary-gradient); padding: 0.5rem 1rem; border-radius: 20px;">
+                                    <i class="bi bi-mortarboard-fill me-1"></i>
+                                    {{ student.course }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('main.edit_student', id=student.id) }}" 
+                                       class="btn btn-outline-primary btn-sm" 
+                                       title="Edit Student">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a href="{{ url_for('main.delete_student', id=student.id) }}" 
+                                       class="btn btn-outline-danger btn-sm" 
+                                       onclick="return confirmDelete('{{ student.name }}')"
+                                       title="Delete Student">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                <h4 class="mt-3 text-muted">No Students Found</h4>
+                <p class="text-muted">Get started by adding your first student!</p>
+                <a href="{{ url_for('main.add_student') }}" class="btn btn-primary btn-lg mt-3">
+                    <i class="bi bi-person-plus-fill me-2"></i>
+                    Add Your First Student
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card animate-in" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <div class="card-body text-center">
+                <i class="bi bi-download" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h5>Export Data</h5>
+                <p class="mb-3">Download student records as CSV</p>
+                <button class="btn btn-light" onclick="alert('Export feature coming soon!')">
+                    <i class="bi bi-file-earmark-spreadsheet me-2"></i>
+                    Export CSV
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card animate-in" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); color: white;">
+            <div class="card-body text-center">
+                <i class="bi bi-bar-chart-fill" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h5>View Analytics</h5>
+                <p class="mb-3">Detailed student statistics</p>
+                <button class="btn btn-light" onclick="alert('Analytics feature coming soon!')">
+                    <i class="bi bi-graph-up me-2"></i>
+                    View Reports
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

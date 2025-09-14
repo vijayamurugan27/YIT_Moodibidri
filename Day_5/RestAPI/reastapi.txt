@@ -1,0 +1,46 @@
+1. What is a REST API?
+
+A REST API (Representational State Transfer Application Programming Interface) is a way for applications to communicate over HTTP using standard operations:
+
+GET → Retrieve data
+
+POST → Create new data
+
+PUT / PATCH → Update existing data
+
+DELETE → Remove data
+
+REST APIs usually exchange data in JSON format.
+
+
+Example:
+
+GET /students   → Get all students
+POST /students  → Add a new student
+GET /students/1 → Get student with ID=1
+PUT /students/1 → Update student with ID=1
+DELETE /students/1 → Delete student with ID=1
+
+
+
+To run this code:
+
+    Install dependencies: pip install flask flask-sqlalchemy
+
+    Run the script
+
+    The SQLite database will be created automatically in students.db
+
+The API provides all standard CRUD operations:
+
+    GET /students - Get all students
+
+    GET /students/<id> - Get specific student
+
+    POST /students - Create new student
+
+    PUT /students/<id> - Update student
+
+    DELETE /students/<id> - Delete student
+
+The code is well-structured and follows REST conventions!

@@ -1,0 +1,80 @@
+<!-- Simple edit_student.html template to fix the immediate error -->
+{% extends "base.html" %}
+
+{% block title %}Edit Student - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header animate-in">
+    <div class="container">
+        <h1><i class="bi bi-pencil-square me-3"></i>Edit Student</h1>
+        <p class="lead">Update student information for {{ student.name }}</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card animate-in">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="bi bi-person-gear me-2"></i>
+                    Update Student Information
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="name" class="form-label">
+                                    <i class="bi bi-person-fill me-2"></i>
+                                    Student Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="name" 
+                                       name="name" 
+                                       value="{{ student.name }}"
+                                       placeholder="Enter student's full name"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid student name.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="course" class="form-label">
+                                    <i class="bi bi-book-fill me-2"></i>
+                                    Course
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="course" 
+                                       name="course" 
+                                       value="{{ student.course }}"
+                                       placeholder="Enter course name"
+                                       required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid course name.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary btn-lg me-md-2">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-lg me-2"></i>
+                            Update Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,402 @@
+# Project Structure:
+# student_management/
+# ├── app/
+# │   ├── __init__.py
+# │   ├── models/
+# │   │   ├── __init__.py
+# │   │   └── student.py
+# │   ├── api/
+# │   │   ├── __init__.py
+# │   │   └── students.py
+# │   ├── views/
+# │   │   ├── __init__.py
+# │   │   └── students.py
+# │   ├── templates/
+# │   │   ├── base.html
+# │   │   ├── index.html
+# │   │   ├── add_student.html
+# │   │   └── edit_student.html
+# │   └── static/
+# │       ├── css/
+# │       └── js/
+# ├── config.py
+# ├── run.py
+# └── requirements.txt
+
+# =============================================================================
+# FILE: config.py
+# =============================================================================
+import os
+from pathlib import Path
+
+class Config:
+    """Base configuration class."""
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-secret-key-here'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///students.db'
+
+class DevelopmentConfig(Config):
+    """Development configuration."""
+    DEBUG = True
+
+class ProductionConfig(Config):
+    """Production configuration."""
+    DEBUG = False
+
+class TestingConfig(Config):
+    """Testing configuration."""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'testing': TestingConfig,
+    'default': DevelopmentConfig
+}
+
+# =============================================================================
+# FILE: app/__init__.py
+# =============================================================================
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from config import config
+
+db = SQLAlchemy()
+
+def create_app(config_name='default'):
+    """Application factory pattern."""
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    
+    # Initialize extensions
+    db.init_app(app)
+    
+    # Register blueprints
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
+    
+    from app.views import bp as main_bp
+    app.register_blueprint(main_bp)
+    
+    # Create database tables
+    with app.app_context():
+        db.create_all()
+    
+    # Register CLI commands
+    register_cli_commands(app)
+    
+    return app
+
+def register_cli_commands(app):
+    """Register custom CLI commands."""
+    from app.commands import test_api
+    app.cli.add_command(test_api)
+
+# =============================================================================
+# FILE: app/models/__init__.py
+# =============================================================================
+from .student import Student
+
+__all__ = ['Student']
+
+# =============================================================================
+# FILE: app/models/student.py
+# =============================================================================
+from app import db
+
+class Student(db.Model):
+    """Student model."""
+    __tablename__ = 'students'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    course = db.Column(db.String(100), nullable=False)
+    
+    def __repr__(self):
+        return f'<Student {self.name}>'
+    
+    def serialize(self):
+        """Convert model to dictionary for JSON serialization."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "course": self.course
+        }
+    
+    @classmethod
+    def create(cls, name, course):
+        """Create a new student."""
+        student = cls(name=name, course=course)
+        db.session.add(student)
+        db.session.commit()
+        return student
+    
+    def update(self, **kwargs):
+        """Update student attributes."""
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        db.session.commit()
+        return self
+    
+    def delete(self):
+        """Delete the student."""
+        db.session.delete(self)
+        db.session.commit()
+
+# =============================================================================
+# FILE: app/api/__init__.py
+# =============================================================================
+from flask import Blueprint
+
+bp = Blueprint('api', __name__)
+
+from app.api import students
+
+# =============================================================================
+# FILE: app/api/students.py
+# =============================================================================
+from flask import request, jsonify
+from app.api import bp
+from app.models import Student
+from app import db
+
+@bp.route('/students', methods=['POST'])
+def create_student():
+    """Create a new student via API."""
+    try:
+        data = request.get_json()
+        if not data or 'name' not in data or 'course' not in data:
+            return jsonify({'error': 'Invalid input. Name and course are required.'}), 400
+        
+        student = Student.create(name=data['name'], course=data['course'])
+        return jsonify(student.serialize()), 201
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/students', methods=['GET'])
+def get_students():
+    """Get all students via API."""
+    try:
+        students = Student.query.all()
+        return jsonify([student.serialize() for student in students])
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/students/<int:id>', methods=['GET'])
+def get_student(id):
+    """Get a single student by ID via API."""
+    try:
+        student = Student.query.get(id)
+        if not student:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        return jsonify(student.serialize())
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/students/<int:id>', methods=['PUT'])
+def update_student(id):
+    """Update a student via API."""
+    try:
+        data = request.get_json()
+        student = Student.query.get(id)
+        if not student:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        # Update fields if provided
+        update_data = {}
+        if 'name' in data:
+            update_data['name'] = data['name']
+        if 'course' in data:
+            update_data['course'] = data['course']
+        
+        student.update(**update_data)
+        return jsonify(student.serialize())
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/students/<int:id>', methods=['DELETE'])
+def delete_student(id):
+    """Delete a student via API."""
+    try:
+        student = Student.query.get(id)
+        if not student:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        student.delete()
+        return jsonify({'message': 'Student deleted successfully'})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# =============================================================================
+# FILE: app/views/__init__.py
+# =============================================================================
+from flask import Blueprint
+
+bp = Blueprint('main', __name__)
+
+from app.views import students
+
+# =============================================================================
+# FILE: app/views/students.py
+# =============================================================================
+from flask import render_template, request, redirect, url_for, flash
+from app.views import bp
+from app.models import Student
+
+@bp.route('/')
+def index():
+    """Display all students."""
+    students = Student.query.all()
+    return render_template('index.html', students=students)
+
+@bp.route('/add', methods=['GET', 'POST'])
+def add_student():
+    """Add a new student."""
+    if request.method == 'POST':
+        try:
+            name = request.form['name']
+            course = request.form['course']
+            
+            if not name or not course:
+                flash('Name and course are required.', 'error')
+                return render_template('add_student.html')
+            
+            Student.create(name=name, course=course)
+            flash('Student added successfully!', 'success')
+            return redirect(url_for('main.index'))
+        
+        except Exception as e:
+            flash(f'Error adding student: {str(e)}', 'error')
+            return render_template('add_student.html')
+    
+    return render_template('add_student.html')
+
+@bp.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_student(id):
+    """Edit an existing student."""
+    student = Student.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        try:
+            name = request.form['name']
+            course = request.form['course']
+            
+            if not name or not course:
+                flash('Name and course are required.', 'error')
+                return render_template('edit_student.html', student=student)
+            
+            student.update(name=name, course=course)
+            flash('Student updated successfully!', 'success')
+            return redirect(url_for('main.index'))
+        
+        except Exception as e:
+            flash(f'Error updating student: {str(e)}', 'error')
+            return render_template('edit_student.html', student=student)
+    
+    return render_template('edit_student.html', student=student)
+
+@bp.route('/delete/<int:id>')
+def delete_student(id):
+    """Delete a student."""
+    try:
+        student = Student.query.get_or_404(id)
+        student.delete()
+        flash('Student deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error deleting student: {str(e)}', 'error')
+    
+    return redirect(url_for('main.index'))
+
+# =============================================================================
+# FILE: app/commands.py
+# =============================================================================
+import click
+import json
+from flask.cli import with_appcontext
+
+@click.command()
+@with_appcontext
+def test_api():
+    """Test API endpoints."""
+    from flask import current_app
+    
+    with current_app.test_client() as client:
+        try:
+            # Create
+            response = client.post('/api/students', json={'name': 'Test User', 'course': 'AI'})
+            assert response.status_code == 201
+            student_id = json.loads(response.data)['id']
+            click.echo('✅ POST works')
+
+            # Read
+            response = client.get(f'/api/students/{student_id}')
+            assert response.status_code == 200
+            click.echo('✅ GET works')
+
+            # Update
+            response = client.put(f'/api/students/{student_id}', json={'course': 'ML'})
+            assert response.status_code == 200
+            click.echo('✅ PUT works')
+
+            # Delete
+            response = client.delete(f'/api/students/{student_id}')
+            assert response.status_code == 200
+            click.echo('✅ DELETE works')
+
+            # Verify deletion
+            response = client.get(f'/api/students/{student_id}')
+            assert response.status_code == 404
+            click.echo('✅ Delete verified')
+
+            click.echo('🎉 All API tests passed!')
+        
+        except AssertionError as e:
+            click.echo(f'❌ API test failed: {str(e)}')
+        except Exception as e:
+            click.echo(f'❌ Unexpected error: {str(e)}')
+
+# =============================================================================
+# FILE: run.py
+# =============================================================================
+import os
+from app import create_app
+
+app = create_app(os.getenv('FLASK_ENV') or 'default')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# =============================================================================
+# FILE: requirements.txt
+# =============================================================================
+# Flask==2.3.3
+# Flask-SQLAlchemy==3.0.5
+# click==8.1.7
+
+# =============================================================================
+# USAGE INSTRUCTIONS:
+# =============================================================================
+# 1. Create the directory structure as shown at the top
+# 2. Create each file with the corresponding content
+# 3. Install dependencies: pip install -r requirements.txt
+# 4. Run the application: python run.py
+# 5. Test the API: flask test-api (after setting FLASK_APP=run.py)
+#
+# Key improvements:
+# - Application factory pattern for better testing and configuration
+# - Blueprints for modular organization
+# - Separate models, views, and API routes
+# - Configuration management
+# - Error handling and validation
+# - Custom CLI commands
+# - Better separation of concerns
+# - Class methods for common operations
+# - Flash messages for user feedback

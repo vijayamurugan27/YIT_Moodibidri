@@ -1,0 +1,25 @@
+1) JSON Handling → Making sure requests & responses use JSON properly.
+
+2) Serialization → Converting SQLAlchemy objects into JSON-friendly format.
+
+3) Testing APIs → Using Flask’s built-in test client (no need for external tools).
+
+
+
+What’s New Here
+
+1) JSON Handling
+
+        request.get_json() for input.
+
+        jsonify() for output.
+
+2) Serialization
+
+        Added .to_dict() method inside Student model.
+
+3) Testing APIs
+
+        flask test CLI command runs CRUD tests without Postman/cURL.
+
+        Uses Flask’s test_client() to simulate API calls.
