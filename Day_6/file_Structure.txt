@@ -1,14 +1,19 @@
-flask_auth_app/
-│
+Flask_authProduct/
 ├── app.py
 ├── models.py
-├── forms.py
+├── requirements.txt
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
 ├── templates/
 │   ├── base.html
+│   ├── index.html
 │   ├── login.html
 │   ├── register.html
-│   ├── dashboard.html
-│   └── index.html
-├── requirements.txt
+│   ├── products.html
+│   ├── add_product.html
+│   └── edit_product.html
 └── instance/
-    └── database.db
+    └── site.db
