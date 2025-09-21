@@ -1,0 +1,14 @@
+flask_auth_app/
+│
+├── app.py
+├── models.py
+├── forms.py
+├── templates/
+│   ├── base.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   └── index.html
+├── requirements.txt
+└── instance/
+    └── database.db
