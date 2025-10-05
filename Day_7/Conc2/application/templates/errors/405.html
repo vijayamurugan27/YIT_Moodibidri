@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}405 - Method Not Allowed{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content">
+        <h1 class="error-code">405</h1>
+        <h2 class="error-title">Method Not Allowed</h2>
+        <p class="error-message">
+            The request method is not supported for the requested resource.
+        </p>
+        
+        <div class="error-details">
+            <p><strong>Request Method:</strong> {{ request.method }}</p>
+            <p><strong>Requested URL:</strong> {{ request.url }}</p>
+        </div>
+
+        <div class="suggestions">
+            <h3>What you can do:</h3>
+            <ul>
+                <li>Check if you're using the correct HTTP method (GET, POST, etc.)</li>
+                <li>Verify the URL endpoint supports the method you're using</li>
+                <li>Contact support if you believe this is an error</li>
+            </ul>
+        </div>
+
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Go Home</a>
+            <button onclick="history.back()" class="btn btn-secondary">Go Back</button>
+            <button onclick="location.reload()" class="btn btn-info">Try Again</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

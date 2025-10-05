@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to the Flask Error Handling Demo!</h2>
+
+<p>This application demonstrates comprehensive error handling and debugging techniques in Flask.</p>
+
+<h3>Features Demonstrated:</h3>
+<ul>
+    <li><strong>Flask Debugger</strong>: Interactive debugging during development</li>
+    <li><strong>Custom Error Pages</strong>: User-friendly error templates for different HTTP status codes</li>
+    <li><strong>Custom Exception Classes</strong>: ValidationError and AuthenticationError</li>
+    <li><strong>Comprehensive Logging</strong>: Different log levels for development and production</li>
+    <li><strong>API Error Handling</strong>: JSON responses for API endpoints</li>
+    <li><strong>Health Check Endpoint</strong>: For production monitoring</li>
+</ul>
+
+<h3>Try These Routes:</h3>
+<ul>
+    <li><code>/debug?user_id=123</code> - Triggers Flask debugger when debug=True</li>
+    <li><code>/error/404</code> - Shows custom 404 page</li>
+    <li><code>/error/403</code> - Shows custom 403 page with authentication error</li>
+    <li><code>/error/400</code> - Shows custom 400 page with validation error</li>
+    <li><code>/error/500</code> - Shows custom 500 page</li>
+    <li><code>/simulate-crash</code> - Randomly crashes to test error handling</li>
+    <li><code>POST /api/users</code> - API endpoint with validation (send JSON with name and email)</li>
+</ul>
+
+<h3>API Testing Example:</h3>
+<pre><code>curl -X POST http://localhost:5000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'</code></pre>
+
+<p><strong>Important:</strong> Make sure <code>FLASK_DEBUG=true</code> to see the interactive debugger!</p>
+{% endblock %}

@@ -1,0 +1,1 @@
+2025-10-05 23:39:40,952 - flask_app - ERROR - 1299278696.py:33 - Unhandled exception: name 'undefined_variable' is not defined

@@ -1,0 +1,37 @@
+Running the Application
+
+    1) Install dependencies:
+
+
+
+pip install flask
+
+    2) Run in development mode:
+
+
+
+SET FLASK_ENV=development
+SET FLASK_APP=app.py
+flask run
+
+    3) Run in production mode:
+
+
+
+export FLASK_ENV=production
+export SECRET_KEY=your-secret-key
+flask run
+
+Key Features
+
+    Comprehensive Error Handling: Handles all common HTTP errors and unexpected exceptions
+
+    User-Friendly Error Pages: Custom templates for different error types
+
+    JSON API Support: Returns JSON errors for API requests
+
+    Logging: Detailed logging in production, debug logging in development
+
+    Security: Proper error handling prevents information leakage
+
+    Responsive Design: Error pages work on all device sizes

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask Error Handling Demo{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .nav {
+            margin: 10px 0;
+        }
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Flask Error Handling & Debugging Demo</h1>
+        <div class="nav">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('debug_route') }}?user_id=123">Debug Route</a>
+            <a href="{{ url_for('trigger_error', error_code=404) }}">404 Error</a>
+            <a href="{{ url_for('trigger_error', error_code=403) }}">403 Error</a>
+            <a href="{{ url_for('trigger_error', error_code=400) }}">400 Error</a>
+            <a href="{{ url_for('trigger_error', error_code=500) }}">500 Error</a>
+            <a href="{{ url_for('simulate_crash') }}">Simulate Crash</a>
+            <a href="{{ url_for('health_check') }}">Health Check</a>
+        </div>
+    </div>
+    
+    {% block content %}{% endblock %}
+</body>
+</html>

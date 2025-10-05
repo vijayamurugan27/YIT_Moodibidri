@@ -1,0 +1,5 @@
+{"timestamp": "2025-10-06 00:08:50,308", "level": "INFO", "message": "Request received", "path": "/", "method": "GET", "remote_addr": "127.0.0.1", "user_id": "anonymous"}
+{"timestamp": "2025-10-06 00:08:50,337", "level": "INFO", "message": "Home page accessed", "path": "", "method": "", "remote_addr": "", "user_id": "anonymous"}
+{"timestamp": "2025-10-06 00:08:50,368", "level": "INFO", "message": "Response sent - 200 (0.06s)", "path": "", "method": "", "remote_addr": "", "user_id": "anonymous"}
+{"timestamp": "2025-10-06 00:08:50,515", "level": "INFO", "message": "Request received", "path": "/favicon.ico", "method": "GET", "remote_addr": "127.0.0.1", "user_id": "anonymous"}
+{"timestamp": "2025-10-06 00:08:50,515", "level": "INFO", "message": "Response sent - 404 (0.00s)", "path": "", "method": "", "remote_addr": "", "user_id": "anonymous"}
