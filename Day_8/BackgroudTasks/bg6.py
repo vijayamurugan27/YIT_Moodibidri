@@ -26,7 +26,7 @@ EMAIL_CONFIG = {
     'smtp_server': 'smtp.gmail.com',  # For Gmail
     'smtp_port': 587,
     'sender_email': 'vijayamurugan27@gmail.com',  # Fixed: added @gmail.com
-    'sender_password': 'zqca jhdk kjdf ksnn'  # Your app password
+    'sender_password': 'zqca jhdk kjdf ksnn'  # Your app password # your 16 digit apppassword from google
 }
 
 # In-memory storage for task status
@@ -709,3 +709,4 @@ if __name__ == "__main__":
     
 
     app.run(debug=True, host='0.0.0.0', port=5000)
+
