@@ -26,7 +26,7 @@ EMAIL_CONFIG = {
     'smtp_server': 'smtp.gmail.com',  # For Gmail
     'smtp_port': 587,
     'sender_email': 'vijayamurugan27@gmail.com',  # Fixed: added @gmail.com
-    'sender_password': 'zqca gsfr wcar bqwe'  # Your app password
+    'sender_password': 'zqca jhdk kjdf ksnn'  # Your app password
 }
 
 # In-memory storage for task status
@@ -707,4 +707,5 @@ if __name__ == "__main__":
     print("🌐 Access the dashboard at: http://localhost:5000")
     print("📍 To add emails: Go to 'Manage Emails' tab and use the form")
     
+
     app.run(debug=True, host='0.0.0.0', port=5000)
