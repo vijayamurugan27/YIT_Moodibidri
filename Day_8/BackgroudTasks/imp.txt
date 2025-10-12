@@ -1,0 +1,25 @@
+2. Gmail Setup Instructions:
+
+Step 1: Enable 2-Factor Authentication
+
+    Go to your Google Account → Security
+
+    Enable 2-Step Verification
+
+Step 2: Generate App Password
+
+    Visit: https://myaccount.google.com/security
+
+    Find "App passwords" under "2-Step Verification"
+
+    Generate password for "Mail"
+
+    Use the 16-character password in the code
+
+Step 3: Test with Your Own Email
+
+    Add your email address in the "Manage Emails" tab
+
+    Send a test email
+
+    Check your inbox (and spam folder)
